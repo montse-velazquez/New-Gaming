@@ -160,7 +160,7 @@ def get_games():
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
-#Create '/game' route with the 'POST' method for posting data inside of the GAME Table
+#Create '/game' route with the 'POST' method for posting data inside of the GAME Table, it is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database.
 @app.route('/game', methods=['POST'])
 def add_game():
     try: 
@@ -184,7 +184,7 @@ def get_reviews():
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
-#Create '/review' route with the 'POST' method for posting data inside of the REVIEW Table
+#Create '/review' route with the 'POST' method for posting data inside of the REVIEW Table. it is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database.
 @app.route('/review', methods=['POST'])
 def add_review():
     try: 
@@ -197,7 +197,7 @@ def add_review():
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
-#Create '/update_review' route with the 'PUT' method for updating data inside of the REVIEW Table 
+#Create '/update_review' route with the 'PUT' method for updating data inside of the REVIEW Table. It is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database and to add the integer requested inside of the URL so the code can do the search of the object we are trying to get. 
 @app.route('/update_review/<int:game_id>', methods=['PUT'])
 def update_review(game_id):
     try:
@@ -213,7 +213,7 @@ def update_review(game_id):
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
     
-#Create '/delete_review' route with the 'DELETE' method for deleting single data is inside of the REVIEW Table 
+#Create '/delete_review' route with the 'DELETE' method for deleting single data is inside of the REVIEW Table. It is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database and to add the integer requested inside of the URL so the code can do the search of the object we are trying to get. 
 @app.route('/delete_review/<int:game_id>', methods=['DELETE'])
 def delete_review(game_id):
     try: 
@@ -239,7 +239,7 @@ def get_wishlist():
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
-#Create '/wishlist' route with the 'POST' method for adding data into the WISHLIST Table
+#Create '/wishlist' route with the 'POST' method for adding data into the WISHLIST Table. It is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database and to add the integer requested inside of the URL so the code can do the search of the object we are trying to get. 
 @app.route('/wishlist', methods=['POST'])
 def add_wishlist():
     try: 
@@ -252,7 +252,7 @@ def add_wishlist():
         # Handle the exception
         return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
-#Create '/delete_wishlist' route with the 'DELETE' method for deleting single data inside the WISHLIST Table
+#Create '/delete_wishlist' route with the 'DELETE' method for deleting single data inside the WISHLIST Table. It is need to provide the attributes stored in the Model and Schema, as well as they match the same syntax for getting a right answer from the database and to add the integer requested inside of the URL so the code can do the search of the object we are trying to get. 
 @app.route('/delete_wishlist/<string:wish_id>', methods=['DELETE'])
 def delete_wishlist(wish_id):
     try: 
