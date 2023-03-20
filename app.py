@@ -46,6 +46,11 @@ class GameSchema(Schema):
     game_name = fields.Str()
     game_type = fields.Str()
 
+class ReviewSchema(Schema):
+    id = fields.Int()
+    rate = fields.Int()
+    comment = fields.Str()
+
 #CLI COMMANDS
 
 #CLI commands used for being user friendly and interact with the database and tables, each command has to be written inside of the terminal
