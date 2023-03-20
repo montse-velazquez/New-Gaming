@@ -208,6 +208,14 @@ def get_wishlist():
     wishlist_schema = WishlistSchema(many=True)
     return jsonify(wishlist_schema.dump(wishlist))
 
+@app.route('/wishlist', methods=['POST'])
+def add_wishlist():
+    wishlist_schema = WishlistSchema()
+    wishlist= wishlist_schema.load(request.json)
+    db.session.add(wishlist)
+    db.session.commit()
+    return jsonify(wishlist_schema.dump(wishlist)),201
+
 
 # Runs program 
 if __name__ == '__main__':
