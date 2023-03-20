@@ -1,7 +1,7 @@
 #imported libraries
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields, post_load
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask.cli import with_appcontext
 
 
@@ -152,6 +152,15 @@ def get_games():
     game = Game.query.all()
     game_schema = GameSchema(many=True)
     return jsonify(game_schema.dump(game))
+
+#Create '/game' route with the 'POST' method for posting data inside of the GAME Table
+@app.route('/game', methods=['POST'])
+def add_game():
+    game_schema = GameSchema()
+    game = game_schema.load(request.json)
+    db.session.add(game)
+    db.session.commit()
+    return jsonify(game_schema.dump(game)),201
 
 #Create '/review' route with the 'GET' method for retrieving all the information stored in REVIEW Table
 @app.route('/review', methods=['GET'])
