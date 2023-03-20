@@ -27,6 +27,11 @@ class Game(db.Model):
     game_name = db.Column(db.String(50))
     game_type = db.Column(db.String(50))
 
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rate = db.Column(db.Integer)
+    comment = db.Column(db.String(200))
+
 # SCHEMAS 
 
 # Name Schema created having in mind the Name attributes
@@ -82,6 +87,7 @@ def get_games():
     game = Game.query.all()
     game_schema = GameSchema(many=True)
     return jsonify(game_schema.dump(game))
+
 
 # Runs program 
 if __name__ == '__main__':
