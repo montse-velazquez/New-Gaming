@@ -27,12 +27,21 @@ class Game(db.Model):
     game_name = db.Column(db.String(50))
     game_type = db.Column(db.String(50))
 
+# SCHEMAS 
+
 # Name Schema created having in mind the Name attributes
 class NameSchema(Schema):
     id = fields.Int()
     username = fields.Str()
     first_name = fields.Str()
     last_name = fields.Str()
+
+class GameSchema(Schema):
+    id = fields.Int()
+    game_name = fields.Str()
+    game_type = fields.Str()
+
+#CLI COMMANDS
 
 #CLI commands used for being user friendly and interact with the database and tables, each command has to be written inside of the terminal
 # 'db_create' command will create the tables that were settled woth the Models
