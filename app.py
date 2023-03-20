@@ -169,6 +169,15 @@ def get_reviews():
     review_schema = ReviewSchema(many=True)
     return jsonify(review_schema.dump(review))
 
+#Create '/review' route with the 'POST' method for posting data inside of the REVIEW Table
+@app.route('/review', methods=['POST'])
+def add_review():
+    review_schema = ReviewSchema()
+    review = review_schema.load(request.json)
+    db.session.add(review)
+    db.session.commit()
+    return jsonify(review_schema.dump(review)),201
+
 #Create '/wishlist' route with the 'GET' method for retrieving all the information stored in WISHLIST Table
 @app.route('/wishlist', methods=['GET'])
 def get_wishlist():
