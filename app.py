@@ -22,13 +22,19 @@ class Name(db.Model):
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
 
+# Game model for setting attributes to the Game Table in our database
 class Game(db.Model):
+    # Primary Key of the Game Table
     id = db.Column(db.Integer, primary_key=True)
+    #Attributes of the Game Table
     game_name = db.Column(db.String(50))
     game_type = db.Column(db.String(50))
 
+# Review model for setting attributes to the Review Table in our database
 class Review(db.Model):
+     # Primary Key of the Review Table
     id = db.Column(db.Integer, primary_key=True)
+    #Attributes of the Review Table
     rate = db.Column(db.Integer)
     comment = db.Column(db.String(200))
 
@@ -41,11 +47,13 @@ class NameSchema(Schema):
     first_name = fields.Str()
     last_name = fields.Str()
 
+# Game Schema created having in mind the Name attributes
 class GameSchema(Schema):
     id = fields.Int()
     game_name = fields.Str()
     game_type = fields.Str()
 
+# Review Schema created having in mind the Name attributes
 class ReviewSchema(Schema):
     id = fields.Int()
     rate = fields.Int()
@@ -88,12 +96,14 @@ def get_name():
     name_schema = NameSchema(many=True)
     return jsonify(name_schema.dump(name)) 
 
+#Create '/game' route with the 'GET' method for retrieving all the information stored in GAME Table
 @app.route('/game', methods=['GET'])
 def get_games():
     game = Game.query.all()
     game_schema = GameSchema(many=True)
     return jsonify(game_schema.dump(game))
 
+#Create '/review' route with the 'GET' method for retrieving all the information stored in REVIEW Table
 @app.route('/review', methods=['GET'])
 def get_reviews():
     review = Review.query.all()
