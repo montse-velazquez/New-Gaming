@@ -66,8 +66,9 @@ def db_create():
 def seed_command():
     user1 = Name(username='John98', first_name="John", last_name="DB")
     game1 = Game(game_name='Fortnite', game_type="Battle royale")
+    review1 = Review(rate = 10, comment = "Nice enviroment")
 
-    db.session.add_all([user1, game1])
+    db.session.add_all([user1, game1, review1])
     db.session.commit()
     print('Data seeded successfully.')
 
