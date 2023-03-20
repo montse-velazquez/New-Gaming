@@ -178,6 +178,18 @@ def add_review():
     db.session.commit()
     return jsonify(review_schema.dump(review)),201
 
+#Create '/update_review' route with the 'PUT' method for updating data inside of the REVIEW Table 
+@app.route('/update_review/<int:game_id>', methods=['PUT'])
+def update_review(game_id):
+    review = Review.query.get(game_id)
+    if review:
+        review.rate = request.json['rate']
+        review.comment = request.json['comment']
+        db.session.commit()
+        return jsonify({'message': 'Review created successfully!'}), 202
+    else:
+        return jsonify({'message': 'Game does not exist'}), 404
+
 #Create '/wishlist' route with the 'GET' method for retrieving all the information stored in WISHLIST Table
 @app.route('/wishlist', methods=['GET'])
 def get_wishlist():
