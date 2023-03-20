@@ -1,10 +1,9 @@
 #imported libraries
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields, post_load
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
+import click
 from flask.cli import with_appcontext
-
-
 app = Flask(__name__)
 db = SQLAlchemy()
 
