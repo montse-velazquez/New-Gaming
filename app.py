@@ -94,6 +94,12 @@ def get_games():
     game_schema = GameSchema(many=True)
     return jsonify(game_schema.dump(game))
 
+@app.route('/review', methods=['GET'])
+def get_reviews():
+    review = Review.query.all()
+    review_schema = ReviewSchema(many=True)
+    return jsonify(review_schema.dump(review))
+
 
 # Runs program 
 if __name__ == '__main__':
