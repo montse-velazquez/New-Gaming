@@ -208,6 +208,7 @@ def get_wishlist():
     wishlist_schema = WishlistSchema(many=True)
     return jsonify(wishlist_schema.dump(wishlist))
 
+#Create '/wishlist' route with the 'POST' method for adding data into the WISHLIST Table
 @app.route('/wishlist', methods=['POST'])
 def add_wishlist():
     wishlist_schema = WishlistSchema()
@@ -215,6 +216,17 @@ def add_wishlist():
     db.session.add(wishlist)
     db.session.commit()
     return jsonify(wishlist_schema.dump(wishlist)),201
+
+#Create '/delete_wishlist' route with the 'DELETE' method for deleting single data inside the WISHLIST Table
+@app.route('/delete_wishlist/<string:wish_id>', methods=['DELETE'])
+def delete_wishlist(wish_id):
+    wish = Wishlist.query.get(wish_id)
+    if wish:
+        db.session.delete(wish)
+        db.session.commit()
+        return jsonify({'message': 'WishList item was deleted successfully!'}), 202
+    else:
+        return jsonify({'message': 'Game does not exist'}), 404
 
 
 # Runs program 
