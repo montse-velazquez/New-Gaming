@@ -38,6 +38,13 @@ class Review(db.Model):
     rate = db.Column(db.Integer)
     comment = db.Column(db.String(200))
 
+# Wishlist model for setting attributes to the Wishlist Table in our database
+class Wishlist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    wish_name = db.Column(db.String())
+    wish_type = db.Column(db.String())
+
+
 # SCHEMAS 
 
 # Name Schema created having in mind the Name attributes
@@ -47,17 +54,23 @@ class NameSchema(Schema):
     first_name = fields.Str()
     last_name = fields.Str()
 
-# Game Schema created having in mind the Name attributes
+# Game Schema created having in mind the Game attributes
 class GameSchema(Schema):
     id = fields.Int()
     game_name = fields.Str()
     game_type = fields.Str()
 
-# Review Schema created having in mind the Name attributes
+# Review Schema created having in mind the Review attributes
 class ReviewSchema(Schema):
     id = fields.Int()
     rate = fields.Int()
     comment = fields.Str()
+
+# Wishlist Schema created having in mind the Wishlist attributes
+class WishlistSchema(Schema):
+    id = fields.Int()
+    wish_name = fields.Str()
+    wish_type = fields.Str()
 
 #CLI COMMANDS
 
@@ -75,8 +88,9 @@ def seed_command():
     user1 = Name(username='John98', first_name="John", last_name="DB")
     game1 = Game(game_name='Fortnite', game_type="Battle royale")
     review1 = Review(rate = 10, comment = "Nice enviroment")
+    wishlist1 = Wishlist(wish_name = "Legacy", wish_type = "open-world")
 
-    db.session.add_all([user1, game1, review1])
+    db.session.add_all([user1, game1, review1, wishlist1])
     db.session.commit()
     print('Data seeded successfully.')
 
@@ -109,6 +123,13 @@ def get_reviews():
     review = Review.query.all()
     review_schema = ReviewSchema(many=True)
     return jsonify(review_schema.dump(review))
+
+#Create '/wishlist' route with the 'GET' method for retrieving all the information stored in WISHLIST Table
+@app.route('/wishlist', methods=['GET'])
+def get_wishlist():
+    wishlist = Wishlist.query.all()
+    wishlist_schema = WishlistSchema(many=True)
+    return jsonify(wishlist_schema.dump(wishlist))
 
 
 # Runs program 
