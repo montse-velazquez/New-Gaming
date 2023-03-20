@@ -21,6 +21,8 @@ class Name(db.Model):
     username = db.Column(db.String(50))
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
+    games = db.relationship('Game', backref='name', lazy=True)
+    wishlist = db.relationship('Wishlist', backref='name', lazy=True )
 
 # Game model for setting attributes to the Game Table in our database
 class Game(db.Model):
@@ -29,11 +31,14 @@ class Game(db.Model):
     #Attributes of the Game Table
     game_name = db.Column(db.String(50))
     game_type = db.Column(db.String(50))
+    name_id = db.Column(db.Integer, db.ForeignKey('name.id'))
+    reviews = db.relationship('Review', backref='game', lazy=True)
 
 # Review model for setting attributes to the Review Table in our database
 class Review(db.Model):
      # Primary Key of the Review Table
     id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
     #Attributes of the Review Table
     rate = db.Column(db.Integer)
     comment = db.Column(db.String(200))
@@ -43,6 +48,8 @@ class Wishlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     wish_name = db.Column(db.String())
     wish_type = db.Column(db.String())
+    name_id = db.Column(db.Integer(), db.ForeignKey('name.id'))
+
 
 
 # SCHEMAS 
@@ -53,24 +60,43 @@ class NameSchema(Schema):
     username = fields.Str()
     first_name = fields.Str()
     last_name = fields.Str()
+    games = fields.Nested('GameSchema', many=True, exclude = ('reviews', ))
+    wish = fields.Nested('WishlistSchema', many=True )
 
 # Game Schema created having in mind the Game attributes
 class GameSchema(Schema):
     id = fields.Int()
     game_name = fields.Str()
     game_type = fields.Str()
+    name_id = fields.Int()
+    reviews = fields.Nested('ReviewSchema', many=True )
+
+    @post_load
+    def make_game(self, data, **kwargs):
+        return Game(**data)
 
 # Review Schema created having in mind the Review attributes
 class ReviewSchema(Schema):
     id = fields.Int()
+    game_id = fields.Int()
     rate = fields.Int()
     comment = fields.Str()
+
+    @post_load
+    def make_game(self, data, **kwargs):
+        return Review(**data)
+
 
 # Wishlist Schema created having in mind the Wishlist attributes
 class WishlistSchema(Schema):
     id = fields.Int()
     wish_name = fields.Str()
     wish_type = fields.Str()
+    name_id = fields.Int()
+
+    @post_load
+    def make_game(self, data, **kwargs):
+        return Wishlist(**data)
 
 #CLI COMMANDS
 
@@ -86,9 +112,9 @@ def db_create():
 @with_appcontext
 def seed_command():
     user1 = Name(username='John98', first_name="John", last_name="DB")
-    game1 = Game(game_name='Fortnite', game_type="Battle royale")
-    review1 = Review(rate = 10, comment = "Nice enviroment")
-    wishlist1 = Wishlist(wish_name = "Legacy", wish_type = "open-world")
+    game1 = Game(game_name='Fortnite', game_type="Battle royale", name=user1)
+    review1 = Review(game = game1, rate = 10, comment = "Nice enviroment")
+    wishlist1 = Wishlist(wish_name = "Legacy", wish_type = "open-world", name = user1)
 
     db.session.add_all([user1, game1, review1, wishlist1])
     db.session.commit()
