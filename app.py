@@ -22,6 +22,11 @@ class Name(db.Model):
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
 
+class Game(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_name = db.Column(db.String(50))
+    game_type = db.Column(db.String(50))
+
 # Name Schema created having in mind the Name attributes
 class NameSchema(Schema):
     id = fields.Int()
