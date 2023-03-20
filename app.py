@@ -77,6 +77,12 @@ def get_name():
     name_schema = NameSchema(many=True)
     return jsonify(name_schema.dump(name)) 
 
+@app.route('/game', methods=['GET'])
+def get_games():
+    game = Game.query.all()
+    game_schema = GameSchema(many=True)
+    return jsonify(game_schema.dump(game))
+
 # Runs program 
 if __name__ == '__main__':
     app.run(debug=True)
