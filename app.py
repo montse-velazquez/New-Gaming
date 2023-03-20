@@ -111,7 +111,7 @@ class WishlistSchema(Schema):
 
 #CLI commands used for being user friendly and interact with the database and tables, each command has to be written inside of the terminal
 # 'db_create' command will create the tables that were settled woth the Models
-app.cli.command('db_create')
+@app.cli.command("db_create")
 def db_create():
     db.create_all()
     print('Table created')
@@ -130,7 +130,7 @@ def seed_command():
     print('Data seeded successfully.')
 
 # 'db_drop' command will drop all the tables stored in the database 
-@app.cli.command('db_drop')
+@app.cli.command("db_drop")
 def db_drop():
     db.drop_all()
     print("Table dropped")
@@ -141,91 +141,131 @@ def db_drop():
 #Create '/name' route with the 'GET' method for retrieving all the information stored in NAME Table
 @app.route('/name', methods=['GET'])
 def get_name():
-    name = Name.query.all()
-    name_schema = NameSchema(many=True)
-    return jsonify(name_schema.dump(name)) 
+    try:
+        name = Name.query.all()
+        name_schema = NameSchema(many=True)
+        return jsonify(name_schema.dump(name)) 
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/game' route with the 'GET' method for retrieving all the information stored in GAME Table
 @app.route('/game', methods=['GET'])
 def get_games():
-    game = Game.query.all()
-    game_schema = GameSchema(many=True)
-    return jsonify(game_schema.dump(game))
+    try:
+        game = Game.query.all()
+        game_schema = GameSchema(many=True)
+        return jsonify(game_schema.dump(game))
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/game' route with the 'POST' method for posting data inside of the GAME Table
 @app.route('/game', methods=['POST'])
 def add_game():
-    game_schema = GameSchema()
-    game = game_schema.load(request.json)
-    db.session.add(game)
-    db.session.commit()
-    return jsonify(game_schema.dump(game)),201
+    try: 
+        game_schema = GameSchema()
+        game = game_schema.load(request.json)
+        db.session.add(game)
+        db.session.commit()
+        return jsonify(game_schema.dump(game)),201
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/review' route with the 'GET' method for retrieving all the information stored in REVIEW Table
 @app.route('/review', methods=['GET'])
 def get_reviews():
-    review = Review.query.all()
-    review_schema = ReviewSchema(many=True)
-    return jsonify(review_schema.dump(review))
+    try:
+        review = Review.query.all()
+        review_schema = ReviewSchema(many=True)
+        return jsonify(review_schema.dump(review))
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/review' route with the 'POST' method for posting data inside of the REVIEW Table
 @app.route('/review', methods=['POST'])
 def add_review():
-    review_schema = ReviewSchema()
-    review = review_schema.load(request.json)
-    db.session.add(review)
-    db.session.commit()
-    return jsonify(review_schema.dump(review)),201
+    try: 
+        review_schema = ReviewSchema()
+        review = review_schema.load(request.json)
+        db.session.add(review)
+        db.session.commit()
+        return jsonify(review_schema.dump(review)),201
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/update_review' route with the 'PUT' method for updating data inside of the REVIEW Table 
 @app.route('/update_review/<int:game_id>', methods=['PUT'])
 def update_review(game_id):
-    review = Review.query.get(game_id)
-    if review:
-        review.rate = request.json['rate']
-        review.comment = request.json['comment']
-        db.session.commit()
-        return jsonify({'message': 'Review created successfully!'}), 202
-    else:
-        return jsonify({'message': 'Game does not exist'}), 404
+    try:
+        review = Review.query.get(game_id)
+        if review:
+            review.rate = request.json['rate']
+            review.comment = request.json['comment']
+            db.session.commit()
+            return jsonify({'message': 'Review created successfully!'}), 202
+        else:
+            return jsonify({'message': 'Game does not exist'}), 404
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
     
 #Create '/delete_review' route with the 'DELETE' method for deleting single data is inside of the REVIEW Table 
 @app.route('/delete_review/<int:game_id>', methods=['DELETE'])
 def delete_review(game_id):
-    review = Review.query.get(game_id)
-    if review:
-        db.session.delete(review)
-        db.session.commit()
-        return jsonify({'message': 'Review deleted successfully!'}), 202
-    else:
-        return jsonify({'message': 'Game does not exist'}), 404
+    try: 
+        review = Review.query.get(game_id)
+        if review:
+            db.session.delete(review)
+            db.session.commit()
+            return jsonify({'message': 'Review deleted successfully!'}), 202
+        else:
+            return jsonify({'message': 'Game does not exist'}), 404
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/wishlist' route with the 'GET' method for retrieving all the information stored in WISHLIST Table
 @app.route('/wishlist', methods=['GET'])
 def get_wishlist():
-    wishlist = Wishlist.query.all()
-    wishlist_schema = WishlistSchema(many=True)
-    return jsonify(wishlist_schema.dump(wishlist))
+    try:
+        wishlist = Wishlist.query.all()
+        wishlist_schema = WishlistSchema(many=True)
+        return jsonify(wishlist_schema.dump(wishlist))
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/wishlist' route with the 'POST' method for adding data into the WISHLIST Table
 @app.route('/wishlist', methods=['POST'])
 def add_wishlist():
-    wishlist_schema = WishlistSchema()
-    wishlist= wishlist_schema.load(request.json)
-    db.session.add(wishlist)
-    db.session.commit()
-    return jsonify(wishlist_schema.dump(wishlist)),201
+    try: 
+        wishlist_schema = WishlistSchema()
+        wishlist= wishlist_schema.load(request.json)
+        db.session.add(wishlist)
+        db.session.commit()
+        return jsonify(wishlist_schema.dump(wishlist)),201
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 #Create '/delete_wishlist' route with the 'DELETE' method for deleting single data inside the WISHLIST Table
 @app.route('/delete_wishlist/<string:wish_id>', methods=['DELETE'])
 def delete_wishlist(wish_id):
-    wish = Wishlist.query.get(wish_id)
-    if wish:
-        db.session.delete(wish)
-        db.session.commit()
-        return jsonify({'message': 'WishList item was deleted successfully!'}), 202
-    else:
-        return jsonify({'message': 'Game does not exist'}), 404
+    try: 
+        wish = Wishlist.query.get(wish_id)
+        if wish:
+            db.session.delete(wish)
+            db.session.commit()
+            return jsonify({'message': 'WishList item was deleted successfully!'}), 202
+        else:
+            return jsonify({'message': 'Game does not exist'}), 404
+    except Exception as e:
+        # Handle the exception
+        return jsonify({'message': str(e), 'INSTRUCTION': 'Check for METHOD request or INPUT TYPE. For syntax check inside the documentation'}), 500
 
 
 # Runs program 
