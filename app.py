@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
-from flask import Flask
+from flask import Flask, jsonify
 from flask.cli import with_appcontext
 
 app = Flask(__name__)
@@ -40,7 +40,13 @@ def db_drop():
     db.drop_all()
     print("Table dropped")
 
-    
+
+@app.route('/name', methods=['GET'])
+def get_name():
+    name = Name.query.all()
+    name_schema = NameSchema(many=True)
+    return jsonify(name_schema.dump(name)) 
+
 
 if __name__ == '__main__':
     app.run(debug=True)
