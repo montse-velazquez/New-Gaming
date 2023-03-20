@@ -1,6 +1,6 @@
 #imported libraries
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 from flask import Flask, jsonify
 from flask.cli import with_appcontext
 
@@ -21,6 +21,7 @@ class Name(db.Model):
     username = db.Column(db.String(50))
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
+    #Creates relationship between the GAME and WISHLIST table
     games = db.relationship('Game', backref='name', lazy=True)
     wishlist = db.relationship('Wishlist', backref='name', lazy=True )
 
@@ -31,6 +32,7 @@ class Game(db.Model):
     #Attributes of the Game Table
     game_name = db.Column(db.String(50))
     game_type = db.Column(db.String(50))
+    #Creates Foreign Keys that will be related to the NAME and relationship to the REVIEW table
     name_id = db.Column(db.Integer, db.ForeignKey('name.id'))
     reviews = db.relationship('Review', backref='game', lazy=True)
 
@@ -38,6 +40,7 @@ class Game(db.Model):
 class Review(db.Model):
      # Primary Key of the Review Table
     id = db.Column(db.Integer, primary_key=True)
+    #Creates Foreign Keys that will be related to the GAME
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
     #Attributes of the Review Table
     rate = db.Column(db.Integer)
@@ -48,6 +51,7 @@ class Wishlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     wish_name = db.Column(db.String())
     wish_type = db.Column(db.String())
+    #Creates Foreign Keys that will be related to the NAME
     name_id = db.Column(db.Integer(), db.ForeignKey('name.id'))
 
 
@@ -60,6 +64,7 @@ class NameSchema(Schema):
     username = fields.Str()
     first_name = fields.Str()
     last_name = fields.Str()
+    # Explains how the data will be nested inside of the table 
     games = fields.Nested('GameSchema', many=True, exclude = ('reviews', ))
     wish = fields.Nested('WishlistSchema', many=True )
 
@@ -69,8 +74,10 @@ class GameSchema(Schema):
     game_name = fields.Str()
     game_type = fields.Str()
     name_id = fields.Int()
+    # Explains how the data will be nested inside of the table 
     reviews = fields.Nested('ReviewSchema', many=True )
 
+    # Decorator: Loads data
     @post_load
     def make_game(self, data, **kwargs):
         return Game(**data)
@@ -78,10 +85,12 @@ class GameSchema(Schema):
 # Review Schema created having in mind the Review attributes
 class ReviewSchema(Schema):
     id = fields.Int()
+    # Explains how the data will be nested inside of the table 
     game_id = fields.Int()
     rate = fields.Int()
     comment = fields.Str()
 
+    # Decorator: Loads data
     @post_load
     def make_game(self, data, **kwargs):
         return Review(**data)
@@ -94,6 +103,7 @@ class WishlistSchema(Schema):
     wish_type = fields.Str()
     name_id = fields.Int()
 
+    # Decorator: Loads data 
     @post_load
     def make_game(self, data, **kwargs):
         return Wishlist(**data)
