@@ -189,6 +189,17 @@ def update_review(game_id):
         return jsonify({'message': 'Review created successfully!'}), 202
     else:
         return jsonify({'message': 'Game does not exist'}), 404
+    
+#Create '/delete_review' route with the 'DELETE' method for deleting single data is inside of the REVIEW Table 
+@app.route('/delete_review/<int:game_id>', methods=['DELETE'])
+def delete_review(game_id):
+    review = Review.query.get(game_id)
+    if review:
+        db.session.delete(review)
+        db.session.commit()
+        return jsonify({'message': 'Review deleted successfully!'}), 202
+    else:
+        return jsonify({'message': 'Game does not exist'}), 404
 
 #Create '/wishlist' route with the 'GET' method for retrieving all the information stored in WISHLIST Table
 @app.route('/wishlist', methods=['GET'])
