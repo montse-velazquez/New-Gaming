@@ -154,7 +154,7 @@ The wishlist purpose is to add games that we want to have in the future, so then
 
 >__R6. An ERD for your app__
 
-![Gaming ERD](Images/ERD_GAMING.png "Entity Relationship Diagram of Gaming")
+![Gaming ERD](docs/ERD_GAMING.png "Entity Relationship Diagram of Gaming")
 
 >__R7. Detail any third-party services that your app will use__
 
